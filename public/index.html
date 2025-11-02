@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор Резюме</title>
+    <!-- Подключаем стили для Croppie.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header-controls">
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="ru">RU</button>
+            <button class="lang-btn" data-lang="uz">UZ</button>
+        </div>
+        <div class="top-credits">
+            <span data-lang-key="developedBy">Разработан Шери.</span> <a href="https://t.me/sheriblog" target="_blank" data-lang-key="officialPage">Официальная страница</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 data-lang-key="mainTitle">Конструктор Резюме</h1>
+        <p data-lang-key="subTitle">Заполните поля ниже, чтобы создать профессиональное резюме</p>
+        
+        <form id="resume-form">
+            <div class="form-grid">
+                <div class="form-section">
+                    <h2 data-lang-key="sectionBasicInfo">Основная информация</h2>
+                    <label for="fullName" data-lang-key="labelFullName">Ф.И.О.</label>
+                    <input type="text" id="fullName" name="fullName" required>
+
+                    <label for="jobTitle" data-lang-key="labelJobTitle">Желаемая должность</label>
+                    <input type="text" id="jobTitle" name="jobTitle" required>
+                </div>
+
+                <!-- НОВЫЙ СОВРЕМЕННЫЙ БЛОК ДЛЯ ЗАГРУЗКИ ФОТО -->
+                <div class="form-section photo-upload-section">
+                    <h2 data-lang-key="labelPhoto">Ваше фото</h2>
+                    <div id="image-preview-container">
+                        <div id="image-placeholder">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16"><path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828-.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/></svg>
+                             <span data-lang-key="uploadPhotoText">Нажмите, чтобы загрузить</span>
+                        </div>
+                        <img id="image-preview" src="" alt="Предпросмотр фото" class="hidden">
+                    </div>
+                    <input type="file" id="photo-input" name="photo-input" accept="image/*" class="hidden">
+                </div>
+            </div>
+
+            <div class="form-section full-width">
+                <h2 data-lang-key="sectionContacts">Контакты</h2>
+                <div class="form-grid">
+                     <div>
+                        <label for="phone" data-lang-key="labelPhone">Номер телефона</label>
+                        <input type="tel" id="phone" name="phone" required>
+                     </div>
+                     <div>
+                        <label for="email" data-lang-key="labelEmail">E-mail</label>
+                        <input type="email" id="email" name="email">
+                     </div>
+                </div>
+            </div>
+
+            <!-- НОВЫЙ РАЗДЕЛ -->
+            <div class="form-section full-width">
+                <h2 data-lang-key="sectionPersonalInfo">Личная информация</h2>
+                <div class="form-grid-three">
+                    <div>
+                        <label for="birthDate" data-lang-key="labelBirthDate">Дата рождения</label>
+                        <input type="date" id="birthDate" name="birthDate">
+                    </div>
+                    <div>
+                        <label for="location" data-lang-key="labelLocation">Город проживания</label>
+                        <input type="text" id="location" name="location">
+                    </div>
+                    <div>
+                        <label for="maritalStatus" data-lang-key="labelMaritalStatus">Семейное положение</label>
+                        <select id="maritalStatus" name="maritalStatus">
+                            <option value="single" data-lang-key="maritalSingle">Не женат / Не замужем</option>
+                            <option value="married" data-lang-key="maritalMarried">Женат / Замужем</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section full-width">
+                <h2 data-lang-key="sectionExperience">Опыт работы</h2>
+                <textarea id="workExperience" name="workExperience" rows="10" data-lang-key="placeholderExperience" placeholder="Ведущий UI/UX Дизайнер..." required></textarea>
+            </div>
+            <div class="form-grid">
+                <div class="form-section">
+                    <h2 data-lang-key="sectionEducation">Образование</h2>
+                    <label for="educationLevel" data-lang-key="labelEducationLevel">Уровень образования</label>
+                    <select id="educationLevel" name="educationLevel">
+                        <option value="higher" data-lang-key="eduHigher">Высшее</option>
+                        <option value="incomplete" data-lang-key="eduIncomplete">Неоконченное высшее</option>
+                        <option value="vocational" data-lang-key="eduVocational">Среднее специальное</option>
+                        <option value="secondary" data-lang-key="eduSecondary">Среднее</option>
+                    </select>
+                    <label for="educationInstitutions" data-lang-key="labelEducationInstitutions">Учебные заведения</label>
+                    <textarea id="educationInstitutions" name="educationInstitutions" rows="4"></textarea>
+                </div>
+                <div class="form-section">
+                    <h2 data-lang-key="sectionCourses">Дополнительные курсы (необязательно)</h2>
+                    <textarea id="courses" name="courses" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-section">
+                    <h2 data-lang-key="sectionLanguages">Знание языков</h2>
+                     <textarea id="languages" name="languages" rows="4" data-lang-key="placeholderLanguages" placeholder="Русский - Родной..."></textarea>
+                </div>
+                <div class="form-section">
+                    <h2 data-lang-key="sectionSkills">Личные навыки</h2>
+                    <textarea id="skills" name="skills" rows="4" data-lang-key="placeholderSkills" placeholder="Figma..."></textarea>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button type="button" id="generate-pdf" data-lang-key="btnPdf">Скачать в .PDF</button>
+                <button type="button" id="generate-png" data-lang-key="btnPng">Скачать в .PNG</button>
+            </div>
+        </form>
+
+        <div id="loader" class="loader-hidden">
+            <div class="spinner"></div>
+            <p id="loader-text" data-lang-key="loaderText">Генерируем ваше резюме...</p>
+        </div>
+    </div>
+    
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ КАДРИРОВАНИЯ -->
+    <div id="crop-modal" class="modal-hidden">
+        <div class="modal-content">
+            <h3 data-lang-key="cropModalTitle">Настройте ваше фото</h3>
+            <div id="cropper-container"></div>
+            <div class="modal-buttons">
+                <button id="cancel-crop-btn" data-lang-key="btnCancel">Отмена</button>
+                <button id="save-crop-btn" data-lang-key="btnSave">Сохранить</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Подключаем Croppie.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
