@@ -25,7 +25,6 @@
 - **Backend**: Node.js, Express.js
 - **Генерация документов**: Puppeteer
 - **Обработка форм**: Multer
-- **AI-функции**: OpenAI API
 
 ## ⚙️ Установка и запуск
 
