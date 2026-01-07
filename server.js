@@ -1,15 +1,8 @@
-require('dotenv').config(); // Загружает переменные из .env файла
 const express = require('express');
 const multer = require('multer');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
-const OpenAI = require('openai');
-const pdf = require('pdf-parse');
-const mammoth = require('mammoth');
-
-// Безопасно получаем ключ из .env
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // СЛОВАРЬ ПЕРЕВОДОВ НА СЕРВЕРЕ
 const translations = {
@@ -29,65 +22,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.use(express.static('public'));
-
-// ЭНДПОИНТ: ПАРСИНГ РЕЗЮМЕ С ПОМОЩЬЮ AI
-app.post('/parse-resume', upload.single('resumeFile'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('Файл не загружен.');
-    }
-
-    try {
-        const filePath = req.file.path;
-        let resumeText = '';
-
-        if (req.file.mimetype === 'application/pdf') {
-            const dataBuffer = fs.readFileSync(filePath);
-            const data = await pdf(dataBuffer);
-            resumeText = data.text;
-        } else if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            const result = await mammoth.extractRawText({ path: filePath });
-            resumeText = result.value;
-        } else if (req.file.mimetype === 'text/plain') {
-            resumeText = fs.readFileSync(filePath, 'utf8');
-        } else {
-            fs.unlinkSync(filePath);
-            return res.status(400).send('Неподдерживаемый формат файла. Используйте PDF, DOCX или TXT.');
-        }
-
-        fs.unlinkSync(filePath);
-
-        const prompt = `
-            Ты — эксперт-рекрутер, который анализирует текст резюме и извлекает информацию в строгом JSON формате.
-            Твоя задача — проанализировать текст резюме и заполнить JSON-объект.
-            Ключи в JSON должны быть следующими: "fullName", "jobTitle", "phone", "email", "birthDate", "location", "maritalStatus", "workExperience", "educationLevel", "educationInstitutions", "courses", "languages", "skills".
-            - Для 'workExperience' сохрани оригинальное форматирование, но раздели разные места работы двумя переносами строки (\\n\\n).
-            - Для 'skills' и 'languages' перечисли каждый навык или язык с новой строки (\\n).
-            - Если какая-то информация отсутствует, оставь поле пустым ("").
-            - НЕ ИЗВЛЕКАЙ ИНФОРМАЦИЮ О ФОТО.
-            - Твой ответ должен быть ИСКЛЮЧИТЕЛЬНО JSON-объектом, без лишнего текста и без \`\`\`json.
-
-            Текст резюме:
-            """
-            ${resumeText}
-            """
-        `;
-
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [{ role: "user", content: prompt }],
-            response_format: { type: "json_object" }
-        });
-
-        const parsedData = JSON.parse(response.choices[0].message.content);
-        res.json(parsedData);
-
-    } catch (error) {
-        console.error('AI Parsing Error:', error);
-        res.status(500).send('Ошибка при обработке резюме с помощью AI.');
-    }
-});
-
-
 // ЭНДПОИНТ: ГЕНЕРАЦИЯ PDF
 app.post('/generate/pdf', upload.single('photo'), async (req, res) => {
     try {
